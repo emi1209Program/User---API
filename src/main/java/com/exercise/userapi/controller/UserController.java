@@ -10,13 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * Controlador REST que expone los endpoints relacionados a usuarios.
  *
  * REST Controller that exposes user-related endpoints.
  *
  * Este controlador permite:
- * This controller allows:
  *
  * - Consultar usuarios (GET /users)
  * - Crear usuarios (POST /users)
@@ -30,6 +32,7 @@ import java.util.UUID;
  * simulating a temporary database.
  */
 
+@Tag(name = "Users", description = "User management endpoints")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -47,7 +50,6 @@ public class UserController {
      * Constructor with dependency injection.
      *
      * @param userService servicio de usuarios
-     * @param userService user service
      */
     public UserController(UserService userService) {
         this.userService = userService;
@@ -61,29 +63,19 @@ public class UserController {
      * Returns the list of users stored in memory.
      *
      * Permite:
-     * Allows:
      *
      * - Ordenamiento dinámico mediante el parámetro sortedBy
      * - Filtrado dinámico mediante el parámetro filter
      *
-     * - Dynamic sorting using sortedBy parameter
-     * - Dynamic filtering using filter parameter
-     *
-     * Ejemplos:
      * Examples:
      *
      * /users?sortedBy=email
      * /users?filter=name+co+user
-     *
-     * @param sortedBy campo por el cual ordenar
-     * @param sortedBy field used for sorting
-     *
-     * @param filter filtro dinámico
-     * @param filter dynamic filter
-     *
-     * @return lista de usuarios
-     * @return list of users
      */
+    @Operation(
+            summary = "Get all users",
+            description = "Returns all users with optional sorting and filtering"
+    )
     @GetMapping
     public List<User> getUsers(
             @RequestParam(required = false) String sortedBy,
@@ -99,35 +91,21 @@ public class UserController {
      *
      * Creates a new user in memory.
      *
-     * Validaciones aplicadas:
-     * Applied validations:
+     * Validaciones:
      *
-     * - taxId debe tener formato RFC
-     * - taxId debe ser único
-     * - phone debe tener 10 dígitos
-     * - phone debe cumplir AndresFormat
+     * - RFC válido
+     * - RFC único
+     * - Teléfono válido
      *
-     * - taxId must have RFC format
-     * - taxId must be unique
-     * - phone must contain 10 digits
-     * - phone must pass AndresFormat validation
+     * La contraseña se encripta usando AES256.
      *
-     * La contraseña se almacena usando cifrado AES256.
-     *
-     * Password is stored using AES256 encryption.
-     *
-     * El campo createdAt se genera automáticamente
+     * createdAt se genera automáticamente
      * usando la zona horaria de Madagascar.
-     *
-     * createdAt is automatically generated
-     * using Madagascar timezone.
-     *
-     * @param user usuario a crear
-     * @param user user to create
-     *
-     * @return usuario creado o error 400
-     * @return created user or 400 error
      */
+    @Operation(
+            summary = "Create user",
+            description = "Creates a new user with validations and AES encrypted password"
+    )
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
 
@@ -149,10 +127,7 @@ public class UserController {
      *
      * Actualiza parcialmente un usuario usando su ID.
      *
-     * Partially updates a user using its ID.
-     *
      * Permite modificar:
-     * Allows updating:
      *
      * - email
      * - name
@@ -161,18 +136,11 @@ public class UserController {
      * - taxId
      *
      * La contraseña se vuelve a encriptar automáticamente.
-     *
-     * Password is automatically encrypted again.
-     *
-     * @param id identificador del usuario
-     * @param id user identifier
-     *
-     * @param updates mapa con los campos a actualizar
-     * @param updates map with fields to update
-     *
-     * @return usuario actualizado o 404 si no existe
-     * @return updated user or 404 if not found
      */
+    @Operation(
+            summary = "Update user",
+            description = "Partially updates a user by ID"
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateUser(
             @PathVariable UUID id,
@@ -192,21 +160,12 @@ public class UserController {
      *
      * Elimina un usuario usando su ID.
      *
-     * Deletes a user using its ID.
-     *
-     * Si el usuario no existe devuelve 404.
-     *
-     * If the user does not exist returns 404.
-     *
-     * @param id identificador del usuario
-     * @param id user identifier
-     *
-     * @return 200 si fue eliminado
-     * @return 404 si no existe
-     *
-     * @return 200 if deleted
-     * @return 404 if not found
+     * Si no existe devuelve 404.
      */
+    @Operation(
+            summary = "Delete user",
+            description = "Deletes a user by ID"
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
 
@@ -218,4 +177,5 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
+
 }

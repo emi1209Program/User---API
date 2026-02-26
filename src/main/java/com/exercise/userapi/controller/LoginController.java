@@ -9,15 +9,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * Controlador REST encargado del proceso de autenticación de usuarios.
  *
  * REST Controller responsible for user authentication.
  *
  * Este controlador expone el endpoint:
+ *
  * POST /login
  *
  * This controller exposes the endpoint:
+ *
  * POST /login
  *
  * El taxId funciona como nombre de usuario.
@@ -26,11 +31,14 @@ import org.springframework.web.bind.annotation.RequestBody;
  * La contraseña es validada usando cifrado AES256.
  * The password is validated using AES256 encryption.
  */
+
+@Tag(name = "Login", description = "User authentication endpoints")
 @RestController
 public class LoginController {
 
     /**
      * Servicio que contiene la lógica de negocio para los usuarios.
+     *
      * Service that contains the business logic for users.
      */
     private final UserService userService;
@@ -41,48 +49,38 @@ public class LoginController {
      * Constructor with dependency injection.
      *
      * @param userService servicio de usuarios
-     * @param userService user service
      */
     public LoginController(UserService userService) {
         this.userService = userService;
     }
 
     /**
-     * Endpoint de autenticación de usuarios.
-     *
-     * User authentication endpoint.
-     *
-     * URL:
      * POST /login
      *
+     * Endpoint de autenticación.
+     *
+     * Authentication endpoint.
+     *
      * Recibe:
-     * Receives:
-     * - taxId (username)
+     *
+     * - taxId
      * - password
      *
-     * Busca un usuario cuyo taxId coincida y cuya contraseña
-     * coincida después de ser encriptada.
+     * Returns:
      *
-     * Searches for a user whose taxId matches and whose password
-     * matches after encryption.
+     * 200 → Usuario autenticado
+     * 401 → Credenciales incorrectas
      *
-     * Respuestas:
-     * Responses:
+     * The system searches a user by taxId
+     * and validates the encrypted password.
      *
-     * 200 OK:
-     * Usuario autenticado correctamente.
-     * User authenticated successfully.
-     *
-     * 401 Unauthorized:
-     * Credenciales incorrectas.
-     * Invalid credentials.
-     *
-     * @param request contiene taxId y password
-     * @param request contains taxId and password
-     *
-     * @return usuario autenticado o error 401
+     * @param request login request
      * @return authenticated user or 401 error
      */
+    @Operation(
+            summary = "User login",
+            description = "Authenticates a user using taxId and password with AES encryption"
+    )
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
 
@@ -93,14 +91,15 @@ public class LoginController {
                 request.getPassword()
         );
 
-        // Si el usuario no existe o las credenciales son incorrectas
-        // If user does not exist or credentials are incorrect
+        // Si las credenciales son incorrectas
+        // If credentials are invalid
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
 
-        // Si el login es exitoso devuelve el usuario
-        // If login is successful returns the user
+        // Login exitoso
+        // Successful login
         return ResponseEntity.ok(user);
     }
+
 }

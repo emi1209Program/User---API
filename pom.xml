@@ -1,60 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.exercise</groupId>
-	<artifactId>userapi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>userapi</name>
-	<description>Test API</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>25</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
 
-		<!-- Dependencia necesaria para habilitar controladores REST y endpoints HTTP -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+<!--
+    Maven configuration file for User API project.
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    Archivo de configuración Maven para el proyecto User API.
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    Este archivo define:
+
+    - Dependencias necesarias
+    - Versión de Java
+    - Plugins de compilación
+    - Librerías REST
+    - Librerías de pruebas
+    - Swagger OpenAPI documentation
+
+    This file defines:
+
+    - Required dependencies
+    - Java version
+    - Build plugins
+    - REST libraries
+    - Testing libraries
+    - Swagger OpenAPI documentation
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <!--
+        Spring Boot Parent Project
+
+        Define versiones compatibles automáticamente
+        Defines compatible dependency versions automatically
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.3</version>
+        <relativePath/>
+    </parent>
+
+
+    <!-- Información del proyecto -->
+    <groupId>com.exercise</groupId>
+    <artifactId>userapi</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>userapi</name>
+    <description>User Management REST API</description>
+
+
+    <!-- Versión de Java utilizada -->
+    <properties>
+        <java.version>25</java.version>
+    </properties>
+
+
+    <dependencies>
+
+        <!--
+            Spring Boot Core
+
+            Librerías básicas de Spring Boot.
+            Necesarias para iniciar la aplicación.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+
+        <!--
+            Spring Boot Web
+
+            Permite crear endpoints REST.
+
+            Enables REST controllers and HTTP endpoints.
+
+            Incluye:
+            - REST Controllers
+            - JSON serialization
+            - Embedded Tomcat server
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+        <!--
+            Spring Boot Testing
+
+            Librerías para pruebas unitarias.
+
+            Testing libraries including:
+
+            - JUnit
+            - Assertions
+            - SpringBootTest
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!--
+            Swagger OpenAPI Documentation
+
+            Genera documentación automática de la API.
+
+            Generates automatic API documentation.
+
+            Permite usar:
+
+            http://localhost:8080/swagger-ui.html
+
+            Incluye:
+
+            - Swagger UI
+            - OpenAPI specification
+            - Endpoint testing interface
+        -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <!--
+        Build configuration
+
+        Configuración de compilación Maven.
+    -->
+    <build>
+
+        <plugins>
+
+            <!--
+                Spring Boot Maven Plugin
+
+                Permite ejecutar la aplicación con:
+
+                mvn spring-boot:run
+
+                También genera el archivo .jar
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>
