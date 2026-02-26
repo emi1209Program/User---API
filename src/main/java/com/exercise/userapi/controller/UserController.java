@@ -11,28 +11,78 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * REST Controller that exposes user endpoints.
+ * Controlador REST que expone los endpoints relacionados a usuarios.
  *
- * Endpoints:
- * GET /users
- * POST /users
- * PATCH /users/{id}
- * DELETE /users/{id}
+ * REST Controller that exposes user-related endpoints.
+ *
+ * Este controlador permite:
+ * This controller allows:
+ *
+ * - Consultar usuarios (GET /users)
+ * - Crear usuarios (POST /users)
+ * - Actualizar usuarios (PATCH /users/{id})
+ * - Eliminar usuarios (DELETE /users/{id})
+ *
+ * Los usuarios se almacenan en memoria usando un ArrayList
+ * simulando una base de datos temporal.
+ *
+ * Users are stored in memory using an ArrayList
+ * simulating a temporary database.
  */
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
+    /**
+     * Servicio que contiene la lógica de negocio de usuarios.
+     *
+     * Service that contains the business logic for users.
+     */
     private final UserService userService;
 
+    /**
+     * Constructor con inyección de dependencias.
+     *
+     * Constructor with dependency injection.
+     *
+     * @param userService servicio de usuarios
+     * @param userService user service
+     */
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     /**
      * GET /users
-     * Supports sorting and filtering
+     *
+     * Obtiene la lista de usuarios almacenados en memoria.
+     *
+     * Returns the list of users stored in memory.
+     *
+     * Permite:
+     * Allows:
+     *
+     * - Ordenamiento dinámico mediante el parámetro sortedBy
+     * - Filtrado dinámico mediante el parámetro filter
+     *
+     * - Dynamic sorting using sortedBy parameter
+     * - Dynamic filtering using filter parameter
+     *
+     * Ejemplos:
+     * Examples:
+     *
+     * /users?sortedBy=email
+     * /users?filter=name+co+user
+     *
+     * @param sortedBy campo por el cual ordenar
+     * @param sortedBy field used for sorting
+     *
+     * @param filter filtro dinámico
+     * @param filter dynamic filter
+     *
+     * @return lista de usuarios
+     * @return list of users
      */
     @GetMapping
     public List<User> getUsers(
@@ -44,7 +94,39 @@ public class UserController {
 
     /**
      * POST /users
-     * Creates a new user
+     *
+     * Crea un nuevo usuario en memoria.
+     *
+     * Creates a new user in memory.
+     *
+     * Validaciones aplicadas:
+     * Applied validations:
+     *
+     * - taxId debe tener formato RFC
+     * - taxId debe ser único
+     * - phone debe tener 10 dígitos
+     * - phone debe cumplir AndresFormat
+     *
+     * - taxId must have RFC format
+     * - taxId must be unique
+     * - phone must contain 10 digits
+     * - phone must pass AndresFormat validation
+     *
+     * La contraseña se almacena usando cifrado AES256.
+     *
+     * Password is stored using AES256 encryption.
+     *
+     * El campo createdAt se genera automáticamente
+     * usando la zona horaria de Madagascar.
+     *
+     * createdAt is automatically generated
+     * using Madagascar timezone.
+     *
+     * @param user usuario a crear
+     * @param user user to create
+     *
+     * @return usuario creado o error 400
+     * @return created user or 400 error
      */
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
@@ -64,7 +146,32 @@ public class UserController {
 
     /**
      * PATCH /users/{id}
-     * Updates user attributes
+     *
+     * Actualiza parcialmente un usuario usando su ID.
+     *
+     * Partially updates a user using its ID.
+     *
+     * Permite modificar:
+     * Allows updating:
+     *
+     * - email
+     * - name
+     * - phone
+     * - password
+     * - taxId
+     *
+     * La contraseña se vuelve a encriptar automáticamente.
+     *
+     * Password is automatically encrypted again.
+     *
+     * @param id identificador del usuario
+     * @param id user identifier
+     *
+     * @param updates mapa con los campos a actualizar
+     * @param updates map with fields to update
+     *
+     * @return usuario actualizado o 404 si no existe
+     * @return updated user or 404 if not found
      */
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateUser(
@@ -82,7 +189,23 @@ public class UserController {
 
     /**
      * DELETE /users/{id}
-     * Deletes a user
+     *
+     * Elimina un usuario usando su ID.
+     *
+     * Deletes a user using its ID.
+     *
+     * Si el usuario no existe devuelve 404.
+     *
+     * If the user does not exist returns 404.
+     *
+     * @param id identificador del usuario
+     * @param id user identifier
+     *
+     * @return 200 si fue eliminado
+     * @return 404 si no existe
+     *
+     * @return 200 if deleted
+     * @return 404 if not found
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
