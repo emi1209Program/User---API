@@ -1,0 +1,265 @@
+{
+  "info": {
+    "_postman_id": "7cb0f1cb-7151-485b-8984-1875592219b9",
+    "name": "User API - Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52682468",
+    "_collection_link": "https://go.postman.co/collection/52682468-7cb0f1cb-7151-485b-8984-1875592219b9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get - Users Filter",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"nuevo@mail.com\",\r\n  \"name\": \"nuevo\",\r\n  \"phone\": \"+5215500000000\",\r\n  \"password\": \"password4\",\r\n  \"taxId\": \"XXXX000000XXX\",\r\n  \"addresses\": []\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users"
+          ]
+        },
+        "description": "GET /users?filter\n\nES:  \nObtiene usuarios aplicando filtros dinámicos desde la lista en memoria.\n\nFormato:  \nfilter=campo+operador+valor\n\nEjemplo:  \nGET /users?filter=name+co+nuevo\n\nIN:  \nReturns users filtered dynamically from the in-memory list.\n\nFormat:  \nfilter=field+operator+value\n\nExample:  \nGET /users?filter=name+co+nuevo"
+      },
+      "response": []
+    },
+    {
+      "name": "Post - Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"nuevo@mail.com\",\r\n  \"name\": \"nuevo\",\r\n  \"phone\": \"+525512345678\",\r\n  \"password\": \"password1\",\r\n  \"taxId\": \"LOPE990101AAA\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users"
+          ]
+        },
+        "description": "POST /users\n\nES:  \nCrea un nuevo usuario en la lista en memoria.  \nValida el formato de RFC (taxId), el número telefónico y la unicidad del taxId.  \nLa contraseña se almacena encriptada con AES256.\n\nEjemplo:\n\n{  \n\"email\": \"[nuevo@mail.com](https://mailto:nuevo@mail.com)\",  \n\"name\": \"nuevo\",  \n\"phone\": \"+525512345678\",  \n\"password\": \"password1\",  \n\"taxId\": \"LOPE990101AAA\"  \n}\n\nIN:  \nCreates a new user in the in-memory list.  \nValidates RFC format (taxId), phone number and taxId uniqueness.  \nPassword is stored using AES256 encryption.\n\nExample:\n\n{  \n\"email\": \"[nuevo@mail.com](https://mailto:nuevo@mail.com)\",  \n\"name\": \"nuevo\",  \n\"phone\": \"+525512345678\",  \n\"password\": \"password1\",  \n\"taxId\": \"LOPE990101AAA\"  \n}"
+      },
+      "response": []
+    },
+    {
+      "name": "Patch - Update User",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"nombreActualizado\",\r\n  \"phone\": \"+5215599999999\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/5457fcc3-d217-492b-bc75-22752fe998a3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "5457fcc3-d217-492b-bc75-22752fe998a3"
+          ]
+        },
+        "description": "PATCH /users/{id}\n\nES:  \nActualiza los atributos de un usuario existente usando su ID.  \nSolo se modifican los campos enviados en el request.  \nLa contraseña se guarda encriptada si se actualiza.\n\nEjemplo:\n\n{  \n\"name\": \"nombreActualizado\",  \n\"phone\": \"+5215599999999\"  \n}\n\nEN:  \nUpdates attributes of an existing user by ID.  \nOnly the provided fields are updated.  \nPassword is encrypted if updated.\n\nExample:\n\n{  \n\"name\": \"nombreActualizado\",  \n\"phone\": \"+5215599999999\"  \n}PATCH /users/{id}\n\nES:  \nActualiza los atributos de un usuario existente usando su ID.  \nSolo se modifican los campos enviados en el request.  \nLa contraseña se guarda encriptada si se actualiza.\n\nEjemplo:\n\n{  \n\"name\": \"nombreActualizado\",  \n\"phone\": \"+5215599999999\"  \n}\n\nIN:  \nUpdates attributes of an existing user by ID.  \nOnly the provided fields are updated.  \nPassword is encrypted if updated.\n\nExample:\n\n{  \n\"name\": \"nombreActualizado\",  \n\"phone\": \"+5215599999999\"  \n}"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete - User (ID)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"message\": \"Usuario eliminado correctamente\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/5457fcc3-d217-492b-bc75-22752fe998a3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "5457fcc3-d217-492b-bc75-22752fe998a3"
+          ]
+        },
+        "description": "DELETE /users/{id}\n\nES:  \nElimina un usuario de la lista en memoria usando su ID.  \nSi el usuario existe, será eliminado correctamente.\n\nEjemplo de respuesta:\n\n{  \n\"message\": \"Usuario eliminado correctamente\"  \n}\n\nIN:  \nDeletes a user from the in-memory list using the user ID.  \nIf the user exists, it will be removed successfully.\n\nExample response:\n\n{  \n\"message\": \"User deleted successfully\"  \n}"
+      },
+      "response": []
+    },
+    {
+      "name": "Post - Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"taxId\": \"AARR990101XXX\",\r\n  \"password\": \"password1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "login"
+          ]
+        },
+        "description": "POST /login\n\nES:  \nAutentica un usuario usando taxId como nombre de usuario y password como contraseña.  \nSi las credenciales son correctas devuelve el usuario autenticado.  \nSi son incorrectas devuelve error 401.\n\nEjemplo:\n\n{  \n\"taxId\": \"AARR990101XXX\",  \n\"password\": \"password1\"  \n}\n\nIN:  \nAuthenticates a user using taxId as username and password as credentials.  \nReturns the authenticated user if credentials are correct.  \nReturns 401 error if credentials are invalid.\n\nExample:\n\n{  \n\"taxId\": \"AARR990101XXX\",  \n\"password\": \"password1\"  \n}"
+      },
+      "response": []
+    },
+    {
+      "name": "401 - Password x",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"taxId\": \"AARR990101XXX\",\r\n  \"password\": \"WRONG_PASSWORD\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "login"
+          ]
+        },
+        "description": "POST /login - Invalid Password\n\nES:  \nEjemplo de autenticación fallida cuando la contraseña es incorrecta.  \nEl sistema devuelve error 401 Unauthorized si las credenciales no son válidas.\n\nEjemplo:\n\n{  \n\"taxId\": \"AARR990101XXX\",  \n\"password\": \"WRONG_PASSWORD\"  \n}\n\nRespuesta esperada:  \n401 Unauthorized\n\nIN:  \nExample of failed authentication when the password is incorrect.  \nThe system returns 401 Unauthorized if credentials are invalid.\n\nExample:\n\n{  \n\"taxId\": \"AARR990101XXX\",  \n\"password\": \"WRONG_PASSWORD\"  \n}\n\nExpected response:  \n401 Unauthorized"
+      },
+      "response": []
+    },
+    {
+      "name": "Example Tax_id must be unique",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"otro@mail.com\",\r\n  \"name\": \"otro\",\r\n  \"phone\": \"+525512345678\",\r\n  \"password\": \"password1\",\r\n  \"taxId\": \"LOPE990101AAA\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users"
+          ]
+        },
+        "description": "POST /users - Invalid or Duplicate taxId\n\nES:  \nEjemplo de creación de usuario fallida cuando el taxId es inválido o ya existe.  \nEl sistema valida el formato RFC y que el taxId sea único.  \nSi la validación falla devuelve error 400 Bad Request.\n\nEjemplo:\n\n{  \n\"email\": \"[otro@mail.com](https://mailto:otro@mail.com)\",  \n\"name\": \"otro\",  \n\"phone\": \"+525512345678\",  \n\"password\": \"password1\",  \n\"taxId\": \"LOPE990101AAA\"  \n}\n\nRespuesta esperada:  \n400 Bad Request\n\nIN:  \nExample of failed user creation when taxId is invalid or already exists.  \nThe system validates RFC format and taxId uniqueness.  \nIf validation fails it returns 400 Bad Request.\n\nExample:\n\n{  \n\"email\": \"[otro@mail.com](https://mailto:otro@mail.com)\",  \n\"name\": \"otro\",  \n\"phone\": \"+525512345678\",  \n\"password\": \"password1\",  \n\"taxId\": \"LOPE990101AAA\"  \n}\n\nExpected response:  \n400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "Post - Login incorrect",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"taxId\": \"AARR990101XXX\",\r\n  \"password\": \"loginWrong\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "login"
+          ]
+        },
+        "description": "POST /login - Invalid Credentials\n\nES:  \nEjemplo de autenticación fallida cuando las credenciales son incorrectas.  \nEl sistema devuelve error 401 Unauthorized si el taxId o la contraseña no coinciden.\n\nEjemplo:\n\n{  \n\"taxId\": \"AARR990101XXX\",  \n\"password\": \"loginWrong\"  \n}\n\nRespuesta esperada:  \n401 Unauthorized\n\nIN:  \nExample of failed authentication when credentials are incorrect.  \nThe system returns 401 Unauthorized if taxId or password do not match.\n\nExample:\n\n{  \n\"taxId\": \"AARR990101XXX\",  \n\"password\": \"loginWrong\"  \n}\n\nExpected response:  \n401 Unauthorized"
+      },
+      "response": []
+    }
+  ]
+}
